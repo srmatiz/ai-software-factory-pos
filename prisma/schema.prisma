@@ -1,0 +1,277 @@
+// Data model for the POS + inventory app.
+// Every business-owned table carries `businessId` (multi-tenant).
+// Money is always Decimal(12,2); unit costs use Decimal(12,4) to keep
+// weighted-average precision. Quantities are Decimal(12,3) to allow
+// products sold by weight.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ADMIN
+  CAJERO
+}
+
+enum MovementType {
+  INICIAL
+  COMPRA
+  VENTA
+  AJUSTE
+  DEVOLUCION
+}
+
+enum SaleStatus {
+  COMPLETADA
+  ANULADA
+}
+
+enum PaymentMethod {
+  EFECTIVO
+  TARJETA
+  TRANSFERENCIA
+}
+
+enum CashSessionStatus {
+  ABIERTA
+  CERRADA
+}
+
+model Business {
+  id                 String   @id @default(cuid())
+  name               String
+  taxId              String? // NIT / RUC / RFC
+  address            String?
+  phone              String?
+  currency           String   @default("COP")
+  defaultTaxRate     Decimal  @default(0) @db.Decimal(5, 2) // percent, e.g. 19.00
+  ticketHeader       String?
+  ticketFooter       String?
+  allowNegativeStock Boolean  @default(true)
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+
+  users        User[]
+  categories   Category[]
+  products     Product[]
+  movements    InventoryMovement[]
+  suppliers    Supplier[]
+  purchases    Purchase[]
+  registers    Register[]
+  sales        Sale[]
+  cashSessions CashSession[]
+}
+
+model User {
+  id           String   @id @default(cuid())
+  businessId   String
+  email        String   @unique
+  name         String
+  passwordHash String
+  role         Role     @default(CAJERO)
+  active       Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  business     Business      @relation(fields: [businessId], references: [id])
+  sales        Sale[]
+  purchases    Purchase[]
+  movements    InventoryMovement[]
+  cashSessions CashSession[]
+
+  @@index([businessId])
+}
+
+model Category {
+  id         String   @id @default(cuid())
+  businessId String
+  name       String
+  createdAt  DateTime @default(now())
+
+  business Business  @relation(fields: [businessId], references: [id])
+  products Product[]
+
+  @@unique([businessId, name])
+}
+
+model Product {
+  id         String   @id @default(cuid())
+  businessId String
+  categoryId String?
+  barcode    String?
+  sku        String?
+  name       String
+  salePrice  Decimal  @db.Decimal(12, 2)
+  cost       Decimal  @db.Decimal(12, 4) // weighted average acquisition cost
+  taxRate    Decimal  @default(0) @db.Decimal(5, 2) // percent
+  stock      Decimal  @default(0) @db.Decimal(12, 3) // cache of the movement ledger
+  minStock   Decimal  @default(0) @db.Decimal(12, 3)
+  active     Boolean  @default(true)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  business      Business            @relation(fields: [businessId], references: [id])
+  category      Category?           @relation(fields: [categoryId], references: [id])
+  movements     InventoryMovement[]
+  purchaseItems PurchaseItem[]
+  saleItems     SaleItem[]
+
+  @@unique([businessId, barcode])
+  @@unique([businessId, sku])
+  @@index([businessId, name])
+  @@index([businessId, updatedAt]) // delta sync for offline catalog
+}
+
+// Kardex: source of truth for stock. Product.stock is updated in the same
+// transaction as each movement.
+model InventoryMovement {
+  id         String       @id @default(cuid())
+  businessId String
+  productId  String
+  userId     String?
+  type       MovementType
+  quantity   Decimal      @db.Decimal(12, 3) // signed: + in, - out
+  unitCost   Decimal      @db.Decimal(12, 4)
+  reference  String? // e.g. sale/purchase id
+  note       String?
+  createdAt  DateTime     @default(now())
+
+  business Business @relation(fields: [businessId], references: [id])
+  product  Product  @relation(fields: [productId], references: [id])
+  user     User?    @relation(fields: [userId], references: [id])
+
+  @@index([businessId, productId, createdAt])
+}
+
+model Supplier {
+  id         String   @id @default(cuid())
+  businessId String
+  name       String
+  taxId      String?
+  phone      String?
+  createdAt  DateTime @default(now())
+
+  business  Business   @relation(fields: [businessId], references: [id])
+  purchases Purchase[]
+
+  @@index([businessId])
+}
+
+model Purchase {
+  id         String   @id @default(cuid())
+  businessId String
+  supplierId String?
+  userId     String
+  invoiceRef String? // supplier's invoice number
+  total      Decimal  @db.Decimal(12, 2)
+  createdAt  DateTime @default(now())
+
+  business Business       @relation(fields: [businessId], references: [id])
+  supplier Supplier?      @relation(fields: [supplierId], references: [id])
+  user     User           @relation(fields: [userId], references: [id])
+  items    PurchaseItem[]
+
+  @@index([businessId, createdAt])
+}
+
+model PurchaseItem {
+  id         String  @id @default(cuid())
+  purchaseId String
+  productId  String
+  quantity   Decimal @db.Decimal(12, 3)
+  unitCost   Decimal @db.Decimal(12, 4)
+
+  purchase Purchase @relation(fields: [purchaseId], references: [id], onDelete: Cascade)
+  product  Product  @relation(fields: [productId], references: [id])
+}
+
+model Register {
+  id         String   @id @default(cuid())
+  businessId String
+  name       String
+  prefix     String // ticket number prefix, e.g. "C1"
+  createdAt  DateTime @default(now())
+
+  business     Business      @relation(fields: [businessId], references: [id])
+  sales        Sale[]
+  cashSessions CashSession[]
+
+  @@unique([businessId, prefix])
+}
+
+model CashSession {
+  id             String            @id @default(cuid())
+  businessId     String
+  registerId     String
+  userId         String
+  status         CashSessionStatus @default(ABIERTA)
+  openingAmount  Decimal           @db.Decimal(12, 2)
+  expectedAmount Decimal?          @db.Decimal(12, 2)
+  countedAmount  Decimal?          @db.Decimal(12, 2)
+  openedAt       DateTime          @default(now())
+  closedAt       DateTime?
+
+  business Business @relation(fields: [businessId], references: [id])
+  register Register @relation(fields: [registerId], references: [id])
+  user     User     @relation(fields: [userId], references: [id])
+  sales    Sale[]
+
+  @@index([businessId, registerId, status])
+}
+
+model Sale {
+  id               String     @id // UUID generated on the client (offline-safe, idempotent sync)
+  businessId       String
+  registerId       String
+  cashSessionId    String?
+  userId           String
+  ticketNumber     String // "<register prefix>-<local sequence>"
+  subtotal         Decimal    @db.Decimal(12, 2)
+  tax              Decimal    @db.Decimal(12, 2)
+  discount         Decimal    @default(0) @db.Decimal(12, 2)
+  total            Decimal    @db.Decimal(12, 2)
+  status           SaleStatus @default(COMPLETADA)
+  createdOfflineAt DateTime? // when the sale happened on the device, if offline
+  syncedAt         DateTime   @default(now())
+  createdAt        DateTime   @default(now())
+
+  business    Business     @relation(fields: [businessId], references: [id])
+  register    Register     @relation(fields: [registerId], references: [id])
+  cashSession CashSession? @relation(fields: [cashSessionId], references: [id])
+  user        User         @relation(fields: [userId], references: [id])
+  items       SaleItem[]
+  payments    Payment[]
+
+  @@unique([businessId, ticketNumber])
+  @@index([businessId, createdAt])
+}
+
+model SaleItem {
+  id        String  @id @default(cuid())
+  saleId    String
+  productId String
+  quantity  Decimal @db.Decimal(12, 3)
+  unitPrice Decimal @db.Decimal(12, 2)
+  unitCost  Decimal @db.Decimal(12, 4) // frozen at sale time -> profit reports
+  taxRate   Decimal @db.Decimal(5, 2)
+  discount  Decimal @default(0) @db.Decimal(12, 2)
+
+  sale    Sale    @relation(fields: [saleId], references: [id], onDelete: Cascade)
+  product Product @relation(fields: [productId], references: [id])
+}
+
+model Payment {
+  id       String        @id @default(cuid())
+  saleId   String
+  method   PaymentMethod
+  amount   Decimal       @db.Decimal(12, 2)
+  received Decimal?      @db.Decimal(12, 2) // cash handed over
+  change   Decimal?      @db.Decimal(12, 2)
+
+  sale Sale @relation(fields: [saleId], references: [id], onDelete: Cascade)
+}
