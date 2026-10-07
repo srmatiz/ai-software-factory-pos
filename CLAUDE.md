@@ -46,6 +46,7 @@ Los comandos de pruebas están en [Testing](#testing).
 | `.claude/agents/`        | Subagentes de la software factory (7 agentes + orchestrator)                                  | Pendiente |
 | `.claude/skills/`        | Skills reutilizables (flujos y procedimientos que invocan los agentes)                        | En curso  |
 | `.claude/skills/commit/` | Skill `/commit`: Conventional Commits, rama por feature, checks rápidos, revisión de secretos | ✅        |
+| `.claude/skills/modulo/` | Skill `/modulo`: módulo del roadmap por capas (esquema, servicio, acción, UI, pruebas)        | ✅        |
 
 Reglas:
 
