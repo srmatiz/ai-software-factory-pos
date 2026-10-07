@@ -33,9 +33,12 @@ function check(cmd) {
     if (name === "find" && args.some((a) => FIND_WRITE.test(a)))
       return "find actions that execute or write are blocked";
     if (name === "git") {
-      const sub = args.find((a) => !a.startsWith("-"));
+      // Global options (-c, --config-env, --exec-path, ...) can run arbitrary programs.
+      const [sub, ...subArgs] = args;
+      if (sub?.startsWith("-")) return "git global options are blocked; put the subcommand first";
       if (!GIT_READ.has(sub)) return `git ${sub ?? ""} is not a read-only subcommand`;
-      const subArgs = args.slice(args.indexOf(sub) + 1);
+      if (sub === "grep" && subArgs.some((a) => /^(-[A-Za-z0-9]*O|--open-files-in-pager)/.test(a)))
+        return "git grep --open-files-in-pager is blocked";
       if (sub === "branch" && subArgs.some((a) => !/^(-a|-r|-v|-vv|--list|--all|--show-current)$/.test(a)))
         return "git branch may only list";
       if (subArgs.includes("--ext-diff")) return "--ext-diff is blocked";

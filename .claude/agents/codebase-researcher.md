@@ -52,7 +52,7 @@ The caller will answer and invoke you again. If the term maps to a single mechan
 
 ## Output
 
-Start your reply directly with `## Relevant files`: no title, no preamble, no extra sections, and these four headings copied verbatim, in this order. Hard limits: **under 400 words** in total, at most 8 files, 5 patterns and 5 risks, one or two lines each. Prefer `path:line` citations over explanation, and leave out anything the caller can read in `CLAUDE.md`. Before replying, count; if you are over a limit, cut the least important items.
+Start your reply directly with `## Relevant files`: no title, no preamble, no extra sections, and these four headings copied verbatim, in this order. Hard limits: **under 400 words** in total, at most 8 files, 5 patterns and 5 risks, one or two lines each. Prefer `path:line` citations over explanation, and leave out anything the caller can read in `CLAUDE.md`. Paths are always relative to the repository root (`src/server/services/products.ts`), never absolute. Before replying, count the words; if you are over a limit, cut the least important items and shorten the rest until you are under it.
 
 ```
 ## Relevant files
@@ -76,6 +76,14 @@ Pay special attention in the risks section to:
 - Missing tenant-isolation tests for a service.
 
 Every risk must point to code you read (`path:line`) or to a search that came back empty. No speculative or generic risks: if you cannot verify it, leave it out. Areas that are not implemented yet count as one risk at most, not one per module.
+
+These are **not** risks; leave them out:
+
+- Something the type system already enforces, such as a Prisma enum field (check `prisma/schema.prisma` before claiming a value is unvalidated).
+- Behavior that `CLAUDE.md` defines as the design, such as authorization living in the action (`requireRole`) instead of the service.
+- Items you would describe yourself as "not a bug" or "a feature".
+
+Do not generalize ("all queries use X") unless you checked every case; name the exceptions you found.
 
 ## Rules
 
