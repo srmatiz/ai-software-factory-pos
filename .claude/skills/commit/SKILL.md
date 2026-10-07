@@ -34,10 +34,11 @@ Después de preparar los archivos (paso 6, `git add`), y antes de `git commit`, 
 ```bash
 git diff --cached -U0 | grep -E '^\+' \
   | grep -E "gh[pousr]_[A-Za-z0-9]{20,}|AKIA[0-9A-Z]{16}|sk-ant-|xox[bp]-|BEGIN [A-Z ]*PRIVATE KEY|postgres(ql)?://[^:/]+:[^@]+@" \
-  | grep -v "@localhost" || echo "sin coincidencias"
+  | grep -v "@localhost" \
+  | grep -vF '[A-Za-z0-9]{20,}' || echo "sin coincidencias"
 ```
 
-Las URLs de Postgres hacia `localhost` son las de desarrollo (`docker-compose.yml`, `.env.example`) y se permiten.
+Las URLs de Postgres hacia `localhost` son las de desarrollo (`docker-compose.yml`, `.env.example`) y se permiten. El último filtro descarta la línea de patrones de este mismo skill: un token real nunca contiene sintaxis de regex.
 
 Si aparece algo sospechoso: **no hagas commit**, muéstraselo al usuario y explica el riesgo. Las variables reales van en el proveedor de hosting (ver `README.md`, sección de secretos).
 
