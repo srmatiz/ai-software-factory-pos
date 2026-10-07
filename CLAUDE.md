@@ -35,18 +35,20 @@ Los comandos de pruebas están en [Testing](#testing).
 
 ## Estructura de documentación
 
-| Ubicación                | Contenido                                                                                     | Estado    |
-| ------------------------ | --------------------------------------------------------------------------------------------- | --------- |
-| `CLAUDE.md`              | Reglas y convenciones para agentes y contribuidores (este archivo)                            | ✅        |
-| `README.md`              | Qué es, cómo correrlo, secretos y despliegue                                                  | ✅        |
-| `docs/architecture.md`   | Arquitectura: capas, multi-negocio, inventario, escáner, offline                              | ✅        |
-| `docs/adr/`              | Decisiones de arquitectura numeradas (`NNNN-titulo.md`)                                       | ✅        |
-| `docs/roadmap.md`        | Módulos pendientes; fuente de tareas para la fábrica                                          | ✅        |
-| `docs/context/`          | Contexto de dominio para los agentes (negocio, glosario, flujos)                              | Pendiente |
-| `.claude/agents/`        | Subagentes de la software factory (7 agentes + orchestrator)                                  | Pendiente |
-| `.claude/skills/`        | Skills reutilizables (flujos y procedimientos que invocan los agentes)                        | En curso  |
-| `.claude/skills/commit/` | Skill `/commit`: Conventional Commits, rama por feature, checks rápidos, revisión de secretos | ✅        |
-| `.claude/skills/modulo/` | Skill `/modulo`: módulo del roadmap por capas (esquema, servicio, acción, UI, pruebas)        | ✅        |
+| Ubicación                               | Contenido                                                                                                        | Estado    |
+| --------------------------------------- | ---------------------------------------------------------------------------------------------------------------- | --------- |
+| `CLAUDE.md`                             | Reglas y convenciones para agentes y contribuidores (este archivo)                                               | ✅        |
+| `README.md`                             | Qué es, cómo correrlo, secretos y despliegue                                                                     | ✅        |
+| `docs/architecture.md`                  | Arquitectura: capas, multi-negocio, inventario, escáner, offline                                                 | ✅        |
+| `docs/adr/`                             | Decisiones de arquitectura numeradas (`NNNN-titulo.md`)                                                          | ✅        |
+| `docs/roadmap.md`                       | Módulos pendientes; fuente de tareas para la fábrica                                                             | ✅        |
+| `docs/context/`                         | Contexto de dominio para los agentes (negocio, glosario, flujos)                                                 | Pendiente |
+| `.claude/agents/`                       | Subagentes de la software factory (7 agentes + orchestrator)                                                     | En curso  |
+| `.claude/agents/codebase-researcher.md` | Agente de solo lectura: explica cómo funciona hoy un área del código (archivos, arquitectura, patrones, riesgos) | ✅        |
+| `.claude/hooks/readonly-bash.mjs`       | Hook `PreToolUse` para agentes de solo lectura: permite solo comandos de inspección en Bash                      | ✅        |
+| `.claude/skills/`                       | Skills reutilizables (flujos y procedimientos que invocan los agentes)                                           | En curso  |
+| `.claude/skills/commit/`                | Skill `/commit`: Conventional Commits, rama por feature, checks rápidos, revisión de secretos                    | ✅        |
+| `.claude/skills/modulo/`                | Skill `/modulo`: módulo del roadmap por capas (esquema, servicio, acción, UI, pruebas)                           | ✅        |
 
 Reglas:
 
