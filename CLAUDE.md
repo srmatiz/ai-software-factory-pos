@@ -45,6 +45,7 @@ Los comandos de pruebas están en [Testing](#testing).
 | `docs/context/`                         | Contexto de dominio para los agentes (negocio, glosario, flujos)                                                 | Pendiente |
 | `.claude/agents/`                       | Subagentes de la software factory (7 agentes + orchestrator)                                                     | En curso  |
 | `.claude/agents/codebase-researcher.md` | Agente de solo lectura: explica cómo funciona hoy un área del código (archivos, arquitectura, patrones, riesgos) | ✅        |
+| `.claude/agents/story-writer.md`        | Agente que convierte una idea + hallazgos del researcher en una historia de usuario con criterios verificables   | ✅        |
 | `.claude/hooks/readonly-bash.mjs`       | Hook `PreToolUse` para agentes de solo lectura: permite solo comandos de inspección en Bash                      | ✅        |
 | `.claude/skills/`                       | Skills reutilizables (flujos y procedimientos que invocan los agentes)                                           | En curso  |
 | `.claude/skills/commit/`                | Skill `/commit`: Conventional Commits, rama por feature, checks rápidos, revisión de secretos                    | ✅        |
