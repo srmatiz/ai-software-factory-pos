@@ -47,7 +47,9 @@ Los comandos de pruebas están en [Testing](#testing).
 | `.claude/agents/codebase-researcher.md` | Agente de solo lectura: explica cómo funciona hoy un área del código (archivos, arquitectura, patrones, riesgos)            | ✅        |
 | `.claude/agents/story-writer.md`        | Agente que convierte una idea + hallazgos del researcher en una historia de usuario con criterios verificables              | ✅        |
 | `.claude/agents/spec-writer.md`         | Agente de solo lectura: convierte una historia aprobada en un brief técnico (modelo, flujo, acciones, UI, pruebas, riesgos) | ✅        |
+| `.claude/agents/backend-builder.md`     | Agente que implementa la mitad backend de un brief (esquema, servicio, acción) con pruebas unit e integración               | ✅        |
 | `.claude/hooks/readonly-bash.mjs`       | Hook `PreToolUse` para agentes de solo lectura: permite solo comandos de inspección en Bash                                 | ✅        |
+| `.claude/hooks/backend-paths.mjs`       | Hook `PreToolUse` del backend-builder: permite `Edit`/`Write` solo en archivos de backend y pruebas unit/integración        | ✅        |
 | `.claude/skills/`                       | Skills reutilizables (flujos y procedimientos que invocan los agentes)                                                      | En curso  |
 | `.claude/skills/commit/`                | Skill `/commit`: Conventional Commits, rama por feature, checks rápidos, revisión de secretos                               | ✅        |
 | `.claude/skills/modulo/`                | Skill `/modulo`: módulo del roadmap por capas (esquema, servicio, acción, UI, pruebas)                                      | ✅        |
