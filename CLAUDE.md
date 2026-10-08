@@ -48,8 +48,10 @@ Los comandos de pruebas están en [Testing](#testing).
 | `.claude/agents/story-writer.md`        | Agente que convierte una idea + hallazgos del researcher en una historia de usuario con criterios verificables              | ✅        |
 | `.claude/agents/spec-writer.md`         | Agente de solo lectura: convierte una historia aprobada en un brief técnico (modelo, flujo, acciones, UI, pruebas, riesgos) | ✅        |
 | `.claude/agents/backend-builder.md`     | Agente que implementa la mitad backend de un brief (esquema, servicio, acción) con pruebas unit e integración               | ✅        |
+| `.claude/agents/frontend-builder.md`    | Agente que implementa la mitad frontend de un brief (páginas, componentes, hooks) con pruebas de componentes y e2e          | ✅        |
 | `.claude/hooks/readonly-bash.mjs`       | Hook `PreToolUse` para agentes de solo lectura: permite solo comandos de inspección en Bash                                 | ✅        |
 | `.claude/hooks/backend-paths.mjs`       | Hook `PreToolUse` del backend-builder: permite `Edit`/`Write` solo en archivos de backend y pruebas unit/integración        | ✅        |
+| `.claude/hooks/frontend-paths.mjs`      | Hook `PreToolUse` del frontend-builder: permite `Edit`/`Write` solo en páginas, componentes, hooks y sus pruebas            | ✅        |
 | `.claude/skills/`                       | Skills reutilizables (flujos y procedimientos que invocan los agentes)                                                      | En curso  |
 | `.claude/skills/commit/`                | Skill `/commit`: Conventional Commits, rama por feature, checks rápidos, revisión de secretos                               | ✅        |
 | `.claude/skills/modulo/`                | Skill `/modulo`: módulo del roadmap por capas (esquema, servicio, acción, UI, pruebas)                                      | ✅        |
@@ -86,16 +88,22 @@ Referencias: `src/server/services/products.ts`, `src/app/(app)/productos/actions
 
 ## Testing
 
-| Tipo        | Ubicación            | Comando                    | Qué cubre                                                           |
-| ----------- | -------------------- | -------------------------- | ------------------------------------------------------------------- |
-| Unit        | `tests/unit/`        | `npm test`                 | Lógica pura: esquemas Zod, `money.ts`, detector de escáner. Sin DB. |
-| Integración | `tests/integration/` | `npm run test:integration` | Servicios contra una base real separada (`pos_test`).               |
-| E2E         | `tests/e2e/`         | `npm run test:e2e`         | Flujos completos en el navegador con Playwright.                    |
+| Tipo        | Ubicación            | Comando                    | Qué cubre                                                                 |
+| ----------- | -------------------- | -------------------------- | ------------------------------------------------------------------------- |
+| Unit        | `tests/unit/`        | `npm test`                 | Lógica pura: esquemas Zod, `money.ts`, detector de escáner. Sin DB.       |
+| Componentes | `tests/component/`   | `npm test`                 | Componentes React y hooks de cliente con Testing Library (jsdom). Sin DB. |
+| Integración | `tests/integration/` | `npm run test:integration` | Servicios contra una base real separada (`pos_test`).                     |
+| E2E         | `tests/e2e/`         | `npm run test:e2e`         | Flujos completos en el navegador con Playwright.                          |
 
 **Unit**
 
 - Toda lógica de negocio pura va en `src/lib/` sin dependencias de framework, para poder probarla aquí.
 - Cada esquema Zod nuevo prueba casos válidos, campos obligatorios, negativos, formato decimal con coma y mensajes en español.
+
+**Componentes**
+
+- Archivos `tests/component/**/*.test.tsx`, en jsdom. Prueba client components a través de lo que ve el usuario (`getByLabelText`, `getByRole`): errores, estado de carga y éxito.
+- Mockea las server actions con `vi.mock` usando sus tipos de retorno reales. Los server components que leen la base se cubren con e2e.
 
 **Integración**
 
