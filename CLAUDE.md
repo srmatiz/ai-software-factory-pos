@@ -35,26 +35,28 @@ Los comandos de pruebas están en [Testing](#testing).
 
 ## Estructura de documentación
 
-| Ubicación                               | Contenido                                                                                                                   | Estado    |
-| --------------------------------------- | --------------------------------------------------------------------------------------------------------------------------- | --------- |
-| `CLAUDE.md`                             | Reglas y convenciones para agentes y contribuidores (este archivo)                                                          | ✅        |
-| `README.md`                             | Qué es, cómo correrlo, secretos y despliegue                                                                                | ✅        |
-| `docs/architecture.md`                  | Arquitectura: capas, multi-negocio, inventario, escáner, offline                                                            | ✅        |
-| `docs/adr/`                             | Decisiones de arquitectura numeradas (`NNNN-titulo.md`)                                                                     | ✅        |
-| `docs/roadmap.md`                       | Módulos pendientes; fuente de tareas para la fábrica                                                                        | ✅        |
-| `docs/context/`                         | Contexto de dominio para los agentes (negocio, glosario, flujos)                                                            | Pendiente |
-| `.claude/agents/`                       | Subagentes de la software factory (7 agentes + orchestrator)                                                                | En curso  |
-| `.claude/agents/codebase-researcher.md` | Agente de solo lectura: explica cómo funciona hoy un área del código (archivos, arquitectura, patrones, riesgos)            | ✅        |
-| `.claude/agents/story-writer.md`        | Agente que convierte una idea + hallazgos del researcher en una historia de usuario con criterios verificables              | ✅        |
-| `.claude/agents/spec-writer.md`         | Agente de solo lectura: convierte una historia aprobada en un brief técnico (modelo, flujo, acciones, UI, pruebas, riesgos) | ✅        |
-| `.claude/agents/backend-builder.md`     | Agente que implementa la mitad backend de un brief (esquema, servicio, acción) con pruebas unit e integración               | ✅        |
-| `.claude/agents/frontend-builder.md`    | Agente que implementa la mitad frontend de un brief (páginas, componentes, hooks) con pruebas de componentes y e2e          | ✅        |
-| `.claude/hooks/readonly-bash.mjs`       | Hook `PreToolUse` para agentes de solo lectura: permite solo comandos de inspección en Bash                                 | ✅        |
-| `.claude/hooks/backend-paths.mjs`       | Hook `PreToolUse` del backend-builder: permite `Edit`/`Write` solo en archivos de backend y pruebas unit/integración        | ✅        |
-| `.claude/hooks/frontend-paths.mjs`      | Hook `PreToolUse` del frontend-builder: permite `Edit`/`Write` solo en páginas, componentes, hooks y sus pruebas            | ✅        |
-| `.claude/skills/`                       | Skills reutilizables (flujos y procedimientos que invocan los agentes)                                                      | En curso  |
-| `.claude/skills/commit/`                | Skill `/commit`: Conventional Commits, rama por feature, checks rápidos, revisión de secretos                               | ✅        |
-| `.claude/skills/modulo/`                | Skill `/modulo`: módulo del roadmap por capas (esquema, servicio, acción, UI, pruebas)                                      | ✅        |
+| Ubicación                               | Contenido                                                                                                                                    | Estado    |
+| --------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- | --------- |
+| `CLAUDE.md`                             | Reglas y convenciones para agentes y contribuidores (este archivo)                                                                           | ✅        |
+| `README.md`                             | Qué es, cómo correrlo, secretos y despliegue                                                                                                 | ✅        |
+| `docs/architecture.md`                  | Arquitectura: capas, multi-negocio, inventario, escáner, offline                                                                             | ✅        |
+| `docs/adr/`                             | Decisiones de arquitectura numeradas (`NNNN-titulo.md`)                                                                                      | ✅        |
+| `docs/roadmap.md`                       | Módulos pendientes; fuente de tareas para la fábrica                                                                                         | ✅        |
+| `docs/context/`                         | Contexto de dominio para los agentes (negocio, glosario, flujos)                                                                             | Pendiente |
+| `.claude/agents/`                       | Subagentes de la software factory (7 agentes + orchestrator)                                                                                 | En curso  |
+| `.claude/agents/codebase-researcher.md` | Agente de solo lectura: explica cómo funciona hoy un área del código (archivos, arquitectura, patrones, riesgos)                             | ✅        |
+| `.claude/agents/story-writer.md`        | Agente que convierte una idea + hallazgos del researcher en una historia de usuario con criterios verificables                               | ✅        |
+| `.claude/agents/spec-writer.md`         | Agente de solo lectura: convierte una historia aprobada en un brief técnico (modelo, flujo, acciones, UI, pruebas, riesgos)                  | ✅        |
+| `.claude/agents/backend-builder.md`     | Agente que implementa la mitad backend de un brief (esquema, servicio, acción) con pruebas unit e integración                                | ✅        |
+| `.claude/agents/frontend-builder.md`    | Agente que implementa la mitad frontend de un brief (páginas, componentes, hooks) con pruebas de componentes y e2e                           | ✅        |
+| `.claude/agents/test-verifier.md`       | Agente que escribe pruebas de aceptación (una por criterio de la historia) sobre una funcionalidad ya construida y reporta cuáles se cumplen | ✅        |
+| `.claude/hooks/readonly-bash.mjs`       | Hook `PreToolUse` para agentes de solo lectura: permite solo comandos de inspección en Bash                                                  | ✅        |
+| `.claude/hooks/backend-paths.mjs`       | Hook `PreToolUse` del backend-builder: permite `Edit`/`Write` solo en archivos de backend y pruebas unit/integración                         | ✅        |
+| `.claude/hooks/frontend-paths.mjs`      | Hook `PreToolUse` del frontend-builder: permite `Edit`/`Write` solo en páginas, componentes, hooks y sus pruebas                             | ✅        |
+| `.claude/hooks/test-paths.mjs`          | Hook `PreToolUse` del test-verifier: permite `Edit`/`Write` solo en archivos de prueba                                                       | ✅        |
+| `.claude/skills/`                       | Skills reutilizables (flujos y procedimientos que invocan los agentes)                                                                       | En curso  |
+| `.claude/skills/commit/`                | Skill `/commit`: Conventional Commits, rama por feature, checks rápidos, revisión de secretos                                                | ✅        |
+| `.claude/skills/modulo/`                | Skill `/modulo`: módulo del roadmap por capas (esquema, servicio, acción, UI, pruebas)                                                       | ✅        |
 
 Reglas:
 
