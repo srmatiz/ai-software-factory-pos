@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { formatPercent, marginPercent, unitProfit, weightedAverageCost } from "@/lib/money";
+import { formatMoney, formatPercent, marginPercent, unitProfit, weightedAverageCost } from "@/lib/money";
 
 describe("unitProfit", () => {
   it("is sale price minus cost", () => {
@@ -43,5 +43,18 @@ describe("formatPercent", () => {
   it("uses the Spanish decimal comma", () => {
     // Spacing before % varies across ICU versions, so ignore whitespace.
     expect(formatPercent(52).replace(/\s/g, "")).toBe("52,0%");
+  });
+});
+
+describe("formatMoney", () => {
+  // ICU uses a non-breaking space after the symbol; normalize it for comparison.
+  const fmt = (v: string | number) => formatMoney(v).replace(/\s/g, " ");
+  it("always shows exactly 2 decimals", () => {
+    expect(fmt("2500.5")).toBe("$ 2.500,50");
+    expect(fmt(2500)).toBe("$ 2.500,00");
+    expect(fmt("0")).toBe("$ 0,00");
+  });
+  it("rounds to 2 decimals", () => {
+    expect(fmt("625.125")).toBe("$ 625,13");
   });
 });

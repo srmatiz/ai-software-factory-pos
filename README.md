@@ -11,7 +11,8 @@ Punto de venta e inventario **multi-negocio** para pequeños comercios: registro
 | Base: auth, roles, multi-negocio, layout                  | ✅         |
 | Productos (precio, costo, margen, escáner, stock inicial) | ✅         |
 | Dashboard de inventario                                   | ✅         |
-| Compras / Caja (POS) / Impresión / Reportes / Offline     | 🗺️ Roadmap |
+| Compras (escáner, costo promedio, kardex; sin proveedor)  | ✅         |
+| Caja (POS) / Impresión / Reportes / Offline               | 🗺️ Roadmap |
 
 ## Stack
 

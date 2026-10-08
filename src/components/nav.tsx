@@ -9,7 +9,7 @@ const items = [
   { href: "/dashboard", label: "Inicio", icon: LayoutDashboard },
   { href: "/pos", label: "Caja (POS)", icon: ShoppingCart },
   { href: "/productos", label: "Productos", icon: Package },
-  { href: "/compras", label: "Compras", icon: Truck },
+  { href: "/compras", label: "Compras", icon: Truck, adminOnly: true },
   { href: "/reportes", label: "Reportes", icon: BarChart3 },
   { href: "/config", label: "Configuración", icon: Settings, adminOnly: true },
 ];

@@ -14,7 +14,8 @@ Definir en `.claude/agents/` un equipo de subagentes y un flujo que los encadene
 
 ## Módulos pendientes (orden sugerido)
 
-1. **Compras / entradas de mercancía** (`/compras`): proveedor, ítems escaneados, actualización de stock y costo promedio (`weightedAverageCost`) en una transacción, movimiento `COMPRA`.
+1. ~~**Compras / entradas de mercancía** (`/compras`)~~ ✅ Hecho: ítems escaneados, costo unitario o total del lote, actualización de stock y costo promedio (`weightedAverageCost`) en una transacción con bloqueo de filas, movimiento `COMPRA`. Ver `docs/features/compras/`.
+   - Pendiente como historias aparte: proveedor y número de factura en la compra; unidad de medida (cantidades con decimales para productos por peso).
 2. **Ajustes de inventario**: conteo físico, mermas, motivo obligatorio, movimiento `AJUSTE`.
 3. **Caja (POS)** (`/pos`): apertura/cierre de caja (`CashSession`), carrito con escáner, cobro (efectivo/tarjeta/transferencia, cambio), venta con `SaleItem.unitCost` congelado, movimiento `VENTA`, número de ticket `<prefijo>-<consecutivo>`.
 4. **Impresión y cajón**: generador ESC/POS (58/80 mm), envío por WebUSB/Web Serial, comando de apertura de cajón (`ESC p 0 25 250`), fallback `window.print()`, interfaz `PrinterDriver`.
