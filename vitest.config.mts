@@ -15,6 +15,13 @@ export default defineConfig({
         test: { name: "unit", include: ["tests/unit/**/*.test.ts"], environment: "node" },
       },
       {
+        // React components and client hooks, rendered with Testing Library in jsdom.
+        resolve: { alias },
+        // tsconfig keeps JSX as "preserve" for Next; compile it here instead.
+        oxc: { jsx: { runtime: "automatic" } },
+        test: { name: "component", include: ["tests/component/**/*.test.tsx"], environment: "jsdom" },
+      },
+      {
         resolve: { alias },
         test: {
           name: "integration",

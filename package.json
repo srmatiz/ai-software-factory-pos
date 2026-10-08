@@ -10,7 +10,7 @@
     "typecheck": "tsc --noEmit",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "test": "vitest run --project unit",
+    "test": "vitest run --project unit --project component",
     "test:integration": "vitest run --project integration",
     "test:e2e": "playwright test",
     "db:migrate": "prisma migrate dev",
