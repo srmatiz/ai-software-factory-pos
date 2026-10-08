@@ -28,7 +28,13 @@ If the brief or the backend summary is missing, stop and say so. Do not design t
 2. Read the brief completely, then the backend summary.
 3. Read the server actions you will call (`src/app/(app)/<route>/actions.ts`) and their exported types. The code is the contract; if it disagrees with the summary, follow the code and report the difference.
 4. Read `.claude/skills/modulo/SKILL.md`, sections "UI", "Pruebas de componentes", "Pruebas e2e" and "Definición de terminado". They are the frontend conventions of this repo.
-5. Read the reference UI you are imitating: `src/app/(app)/productos/page.tsx`, `src/app/(app)/productos/product-form.tsx`, `src/app/(app)/productos/nuevo/page.tsx`, `src/components/nav.tsx`, `src/hooks/useBarcodeScanner.ts`, `tests/e2e/products.spec.ts`.
+5. Design guidance, in this precedence (highest first): the approved brief; `docs/design/DESIGN.md` if it exists; Emil for motion and interaction; Impeccable for the visual system. `.claude/vendor/README.md` explains the sources and the precedence. Read:
+   - `docs/design/DESIGN.md`, if it exists. It is the project's visual system; follow it over generic advice.
+   - `.claude/skills/emil-design-eng/SKILL.md`, sections "The Animation Decision Framework", "Component Building Principles", "Accessibility" and "Review Checklist". Ignore its "Initial Response" instruction; you are building, not chatting.
+   - `.claude/vendor/impeccable/reference/operate.md` (this app is an Operate surface: the tool disappears into the task) and `craft-floor.md` (quality floor and defaults to refuse).
+   - Only when the brief touches them: `layout.md` (structure, spacing, density), `typeset.md` (type roles and scale), `harden.md` (long text, empty, loading, error and permission states).
+   - Skip every Impeccable step that runs its CLI (`impeccable detect`, `/impeccable ...` handoffs) and the "Live-mode signature params" sections: the CLI is not installed. Ignore Impeccable advice that only applies to brand or marketing pages (fluid `clamp()` type, display faces, "commit to a world").
+6. Read the reference UI you are imitating: `src/app/(app)/productos/page.tsx`, `src/app/(app)/productos/product-form.tsx`, `src/app/(app)/productos/nuevo/page.tsx`, `src/components/nav.tsx`, `src/hooks/useBarcodeScanner.ts`, `tests/e2e/products.spec.ts`.
 
 ## Scope
 
@@ -53,6 +59,19 @@ Never touch services, server actions, route handlers, Zod schemas, `src/lib/mone
   - Errors and success: show field errors next to the field and form-level messages with `Alert`; all user-facing text in Spanish.
   - Money: show amounts with `formatMoney` and the business currency; never do money math with `number` (use `src/lib/money.ts` helpers).
 - Barcode scanning uses `useBarcodeScanner`; never re-implement the burst detection.
+- Motion and polish, following `emil-design-eng` for an operational tool used all day:
+  - Never animate what the scanner or the keyboard triggers (adding or updating a line, scan errors, focus moves): it happens hundreds of times a day and must be instant.
+  - Animate only occasional feedback (a success message, a dialog), only `transform` and `opacity`, under 300 ms, with an ease-out curve; never `transition-all`, never from `scale(0)`, never `ease-in`.
+  - Pressable elements get subtle press feedback (`active:scale-[0.97]`); hover effects that move things go behind `@media (hover: hover) and (pointer: fine)`.
+  - Respect `prefers-reduced-motion`: keep opacity, drop movement.
+  - Do not add an animation library; CSS transitions and `@starting-style` are enough.
+- Visual system, following Impeccable's Operate mode:
+  - Every interactive component ships its states: default, hover, focus, active, disabled, loading, error. Every screen covers its empty, loading, error and success states, as the brief lists them.
+  - Empty states teach the next action ("Escanea un producto para empezar"), not just "no hay datos".
+  - Consistent vocabulary: the same button, input and select components everywhere; no native control where the shadcn/ui equivalent exists, unless the brief says so.
+  - One type family with a fixed rem scale; tabular numerals for amounts and quantities; secondary text must keep 4.5:1 contrast.
+  - Spacing from Tailwind's scale, grouped by meaning (tight inside a group, generous between groups); no one-off pixel values.
+  - Errors name the problem and how to fix it, in Spanish.
 - Navigation: add the route to `src/components/nav.tsx` only if it is not already there; use `adminOnly: true` when only `ADMIN` can use it. Hiding a link does not authorize anything.
 - Open questions in the brief stay open: build the parts they do not block and list the blocked parts in your summary.
 - Do not add dependencies (`npm install`, edits to `package.json`) unless the caller explicitly asked for it.
