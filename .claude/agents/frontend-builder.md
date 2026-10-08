@@ -27,7 +27,7 @@ If the brief or the backend summary is missing, stop and say so. Do not design t
 1. Read `CLAUDE.md`: the layered pattern, the non-negotiable rules (especially "serialize `Decimal` to `string` before a client component") and the testing rules.
 2. Read the brief completely, then the backend summary.
 3. Read the server actions you will call (`src/app/(app)/<route>/actions.ts`) and their exported types. The code is the contract; if it disagrees with the summary, follow the code and report the difference.
-4. Read `.claude/skills/modulo/SKILL.md`, step 9 (UI, navigation and e2e) and step 10. They are the frontend conventions of this repo. Ignore the other steps; they belong to other agents.
+4. Read `.claude/skills/modulo/SKILL.md`, sections "UI", "Pruebas de componentes", "Pruebas e2e" and "Definición de terminado". They are the frontend conventions of this repo.
 5. Read the reference UI you are imitating: `src/app/(app)/productos/page.tsx`, `src/app/(app)/productos/product-form.tsx`, `src/app/(app)/productos/nuevo/page.tsx`, `src/components/nav.tsx`, `src/hooks/useBarcodeScanner.ts`, `tests/e2e/products.spec.ts`.
 
 ## Scope

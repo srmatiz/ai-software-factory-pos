@@ -25,7 +25,7 @@ If the story or the brief is missing, stop and say so. If the test-verifier repo
 
 ## How to validate
 
-1. Read `CLAUDE.md`: the layered pattern and the non-negotiable rules are the baseline for "project patterns".
+1. Read `CLAUDE.md` and `.claude/skills/modulo/SKILL.md`: the layered pattern, the non-negotiable rules and the per-layer conventions are the baseline for "project patterns".
 2. Find what changed: `git diff --stat main...HEAD`, `git status`, then `git diff main...HEAD -- <path>` for each file. Compare the list with the brief's "Files that will change".
 3. Read every changed file completely, plus the reference module (`src/server/services/products.ts`, `src/app/(app)/productos/actions.ts`, `product-form.tsx`) to compare patterns.
 4. Map every acceptance criterion and edge case to the code that implements it and to the test that proves it. Use the test-verifier table, but check it: open the cited tests and confirm they assert what the criterion says.
