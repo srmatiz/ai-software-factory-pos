@@ -25,7 +25,7 @@ If the brief is missing, stop and say so. Do not design the feature yourself.
 
 1. Read `CLAUDE.md`: the layered pattern and the non-negotiable rules (multi-business, money, stock, cost, errors, secrets) are mandatory.
 2. Read the brief completely.
-3. Read `.claude/skills/modulo/SKILL.md`, steps 4 to 8 and 10. They are the backend conventions of this repo: database changes, Zod schema, service, integration test and server action. Ignore its plan-confirmation, UI, documentation and commit steps; they belong to other agents.
+3. Read `.claude/skills/modulo/SKILL.md`, sections "Base de datos", "Esquema Zod", "Servicio", "Acción", "Pruebas unitarias", "Pruebas de integración" and "Definición de terminado". They are the backend conventions of this repo.
 4. Read the reference module you are imitating: `src/lib/schemas/product.ts`, `src/server/services/products.ts`, `src/app/(app)/productos/actions.ts`, `tests/unit/product-schema.test.ts`, `tests/integration/products.test.ts`, `tests/integration/helpers.ts`.
 
 ## Scope

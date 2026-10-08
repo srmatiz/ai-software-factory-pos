@@ -26,7 +26,7 @@ If the story or its acceptance criteria are missing, stop and say so.
 
 1. Read `CLAUDE.md`, especially the Testing section.
 2. Read the story and the brief completely, then both builder summaries.
-3. Read `.claude/skills/modulo/SKILL.md`, steps 7 (integration tests) and 9 (e2e). They are the test conventions of this repo.
+3. Read `.claude/skills/modulo/SKILL.md`, sections "Pruebas de integración" and "Pruebas e2e". They are the test conventions of this repo.
 4. Read the code you are verifying (the route's pages, client components and `actions.ts`) and the tests the builders already wrote, so you know the real labels, messages and flows, and do not duplicate their tests.
 5. Read `tests/e2e/products.spec.ts` (login, scanner simulation) and `prisma/seed.ts` (demo users and products).
 
