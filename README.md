@@ -13,6 +13,14 @@ Punto de venta e inventario **multi-negocio** para pequeños comercios: registro
 | Dashboard de inventario                                   | ✅         |
 | Compras / Caja (POS) / Impresión / Reportes / Offline     | 🗺️ Roadmap |
 
+## Software factory
+
+Las funcionalidades nuevas se construyen con una cadena de siete subagentes de Claude Code (`.claude/agents/`) que orquesta el skill [`/feature-factory`](.claude/skills/feature-factory/SKILL.md), con aprobación humana de la historia, del brief técnico y antes de abrir el PR.
+
+![Flujo del orquestador: codebase-researcher, story-writer, revisión humana de la historia, spec-writer, revisión humana del brief, backend-builder, frontend-builder, test-verifier, implementation-validator, bucle de corrección si hay brechas críticas, revisión humana final y PR](docs/images/orchestrator-flow.webp)
+
+Las convenciones por capa que siguen los agentes están en el skill [`modulo`](.claude/skills/modulo/SKILL.md), y las guías de diseño de terceros en [`.claude/vendor/`](.claude/vendor/README.md).
+
 ## Stack
 
 Next.js 15 (App Router) · TypeScript · PostgreSQL + Prisma · Auth.js v5 · Tailwind + shadcn/ui · Zod · Vitest · Playwright · GitHub Actions.
