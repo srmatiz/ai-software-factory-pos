@@ -4,3 +4,5 @@ package-lock.json
 prisma/migrations
 test-results
 playwright-report
+.claude/vendor
+.claude/skills/emil-design-eng

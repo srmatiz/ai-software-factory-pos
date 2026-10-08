@@ -45,6 +45,12 @@ If the story or the brief is missing, stop and say so. If the test-verifier repo
 - **Project patterns:** layers in the right place, `Decimal` for money and quantities (never `number`), stock only through an `InventoryMovement` in the same transaction, `DomainError` for expected errors, Spanish UI text, `Decimal` serialized to `string` before client components, shadcn/ui components and accessible labels.
 - **Duplication:** new logic that repeats an existing helper, service or component instead of reusing it.
 - **Brief concerns:** the tenant-isolation, timezone and concurrency notes in the brief's "Risks and open questions": check each one was honoured.
+- **UI craft** (only for changed UI files), against `docs/design/DESIGN.md` if it exists, the "Review Checklist" of `.claude/skills/emil-design-eng/SKILL.md`, and `.claude/vendor/impeccable/reference/operate.md` and `craft-floor.md`:
+  - States from the brief present: empty, loading, error, success; interactive components with hover, focus, disabled and loading.
+  - Motion: nothing animated on scanner or keyboard actions; no `transition-all`, `ease-in` or durations over 300 ms; `prefers-reduced-motion` respected.
+  - Consistency: the same components and spacing scale as the rest of the app; no native control where a shadcn/ui one exists.
+  - Accessibility: labels, `aria-invalid`/`aria-describedby` on errors, visible focus, contrast of secondary text.
+  - These are important or minor, never critical, except an accessibility failure that blocks a task (for example, an error no screen reader can reach), which is important. Mark taste-only points **(opinion)**.
 
 ## Severity
 

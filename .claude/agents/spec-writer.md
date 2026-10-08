@@ -46,6 +46,8 @@ Start your reply directly with `## Data model changes`. Use these seven headings
 
 ## Frontend changes
 - <page/component, server or client, what it shows or does> or "None"
+- States: <for each screen, what the user sees when empty, loading, on error and on success>
+
 
 ## Tests required
 - Unit: <schema/lib cases: valid, required, negative, decimal comma, Spanish messages>

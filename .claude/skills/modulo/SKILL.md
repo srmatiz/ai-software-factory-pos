@@ -82,6 +82,8 @@ Firma: `fn(ctx: TenantContext, ...args, db: Db = defaultDb)`.
 
 ## UI — `src/app/(app)/<ruta>/`
 
+Criterios de diseño: `docs/design/DESIGN.md` (cuando exista), `emil-design-eng` para movimiento e interacción, e Impeccable en modo Operate para el sistema visual. Ver `.claude/vendor/README.md` para las fuentes y el orden de prioridad.
+
 - `page.tsx` como server component: `getTenantContext()` o `requireRole()`, lee con el servicio y formatea con `formatMoney` y la moneda del negocio (`getBusiness`).
 - Client components (`"use client"`) solo donde hay interacción: formularios con `useActionState` y escáner con `useBarcodeScanner`.
 - Serializa todo `Decimal` a `string` antes de pasarlo a un client component.
