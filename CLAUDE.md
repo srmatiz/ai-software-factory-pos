@@ -121,6 +121,7 @@ Referencias: `src/server/services/products.ts`, `src/app/(app)/productos/actions
 - Requieren el seed (`npm run db:seed`). Playwright levanta el servidor solo (`playwright.config.ts`).
 - Para simular el escáner, escribe muy rápido y termina con Enter (`page.keyboard.type(code, { delay: 5 })`). Ver `tests/e2e/products.spec.ts`.
 - Usa selectores accesibles (`getByLabel`, `getByRole`) y datos únicos por ejecución (p. ej. códigos con `Date.now()`).
+- `getByLabel` busca por coincidencia parcial: en filas repetidas, ninguna etiqueta accesible debe contener a otra ("Costo de X" también encuentra "Tipo de costo de X"). Usa prefijos distintos y, para celdas, `getByRole("cell", { name, exact: true })`.
 
 **Definición de terminado**
 

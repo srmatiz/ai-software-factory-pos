@@ -44,6 +44,7 @@ export function formatMoney(value: DecimalLike, currency = "COP", locale = "es-C
   return new Intl.NumberFormat(locale, {
     style: "currency",
     currency,
+    minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   }).format(d(value).toNumber());
 }

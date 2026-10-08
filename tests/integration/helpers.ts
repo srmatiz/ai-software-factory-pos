@@ -19,6 +19,8 @@ export async function createTenant(name = "Test"): Promise<TenantContext> {
 
 export async function deleteTenant(ctx: TenantContext) {
   const where = { businessId: ctx.businessId };
+  await db.purchaseItem.deleteMany({ where: { purchase: where } });
+  await db.purchase.deleteMany({ where });
   await db.inventoryMovement.deleteMany({ where });
   await db.product.deleteMany({ where });
   await db.category.deleteMany({ where });
